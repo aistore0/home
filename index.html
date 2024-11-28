@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Checker | Aistore</title>
+    <link rel="icon" id="favicon" href="default-icon.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #282c34;
+            color: #61dafb;
+        }
+        .container {
+            text-align: center;
+        }
+        .status-box {
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #61dafb;
+            margin-top: 20px;
+            color: #61dafb;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .server-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .check-button {
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #282c34;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+        .check-button:hover {
+            background-color: #21a1f1; /* Warna saat hover */
+            transform: scale(1.05); /* Efek pembesaran saat hover */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cek Status Server Minecraft</h1>
+    <div class="input-group">
+        <label for="serverIp">IP Server:</label>
+        <input type="text" id="serverIp" placeholder="Masukkan IP server">
+    </div>
+    <div class="input-group">
+        <label for="serverPort">Port:</label>
+        <input type="text" id="serverPort" placeholder="Masukkan port server">
+    </div>
+    <button class="check-button" onclick="checkServerStatus()">Cek Status</button>
+
+    <div id="statusBox" class="status-box" style="display: none;">
+        <img id="serverLogo" src="default-icon.png" alt="Server Logo" class="server-logo">
+        <p id="statusMessage"><strong>Status Server:</strong></p>
+        <p id="serverDetails"></p>
+        <p id="quickLink"></p>
+    </div>
+</div>
+
+<script>
+    function checkServerStatus(ip = null, port = null) {
+        ip = ip || document.getElementById('serverIp').value;
+        port = port || document.getElementById('serverPort').value;
+
+        document.title = `Ai store | Result ${ip}:${port}`;
+        
+        const quickLink = document.getElementById('quickLink');
+        quickLink.innerHTML = `<a href="https://cloud.aistore.my.id/Server/?ip=${ip}&port=${port}" target="_blank" style="color: #61dafb;">Lihat di https://cloud.aistore.my.id/server/${ip}:${port}</a>`;
+
+        fetch(`https://api.mcsrvstat.us/3/${ip}:${port}`)
+            .then(response => response.json())
+            .then(data => {
+                const statusBox = document.getElementById('statusBox');
+                const statusMessage = document.getElementById('statusMessage');
+                const serverDetails = document.getElementById('serverDetails');
+
+                if (data.online) {
+                    statusBox.style.display = 'block';
+                    document.getElementById('favicon').href = data.icon || 'default-icon.png';
+                    document.getElementById('serverLogo').src = data.icon || 'default-icon.png';
+                    
+                    statusMessage.textContent = "Server Online";
+                    serverDetails.innerHTML = `
+                        IP: ${ip}<br>
+                        Port: ${port}<br>
+                        Online Players: ${data.players.online}<br>
+                        Max Players: ${data.players.max}<br>
+                        Bio: ${data.motd.clean.join(' ')}<br>
+                        Versi: ${data.version}<br>
+                        Software: ${data.software}<br>
+                    `;
+                } else {
+                    showError("Server offline atau IP dan port tidak valid.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showError("Gagal memuat server.");
+            });
+    }
+
+    function showError(message) {
+        const statusBox = document.getElementById('statusBox');
+        const statusMessage = document.getElementById('statusMessage');
+        const serverDetails = document.getElementById('serverDetails');
+
+        statusBox.style.display = 'block';
+        statusMessage.textContent = message;
+        serverDetails.innerHTML = "";
+        document.getElementById('serverLogo').src = "default-icon.png"; 
+    }
+
+    // Mendapatkan parameter IP dan Port dari URL
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ip = urlParams.get('ip');
+        const port = urlParams.get('port');
+
+        if (ip && port) {
+            document.getElementById('serverIp').value = ip;
+            document.getElementById('serverPort').value = port;
+            checkServerStatus(ip, port);
+        }
+    });
+</script>
+
+</body>
+</html>
