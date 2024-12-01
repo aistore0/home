@@ -1,148 +1,71 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Checker | Aistore</title>
-    <link rel="icon" id="favicon" href="default-icon.png" type="image/png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #282c34;
-            color: #61dafb;
-        }
-        .container {
-            text-align: center;
-        }
-        .status-box {
-            display: inline-block;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #61dafb;
-            margin-top: 20px;
-            color: #61dafb;
-            position: relative;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .input-group {
-            margin: 10px 0;
-        }
-        .server-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .check-button {
-            padding: 10px 20px;
-            background-color: #61dafb;
-            color: #282c34;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s, transform 0.2s;
-            margin-top: 10px;
-        }
-        .check-button:hover {
-            background-color: #21a1f1; /* Warna saat hover */
-            transform: scale(1.05); /* Efek pembesaran saat hover */
-        }
-    </style>
+    <title>AI Store - Hosting Services</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <header>
+        <h1>AI Store</h1>
+        <nav>
+            <i class="fas fa-bars menu-icon" id="menuIcon"></i>
+            <div class="menu-list" id="menuList">
+                <a href="#">Home</a>
+                <a href="products/">Products</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+                <a href="Upload/">Upload</a>
+            </div>
+        </nav>
+    </header>
 
-<div class="container">
-    <h1>Cek Status Server Minecraft</h1>
-    <div class="input-group">
-        <label for="serverIp">IP Server:</label>
-        <input type="text" id="serverIp" placeholder="Masukkan IP server">
+    <div class="hero">
+        <h2>Welcome to AI Store</h2>
+        <p>Kualitas Hosting / Jasa sangat baik, aman, terpercaya tanpa delay</p>
+        <a href="#products">Go To List Products Panel</a>
     </div>
-    <div class="input-group">
-        <label for="serverPort">Port:</label>
-        <input type="text" id="serverPort" placeholder="Masukkan port server">
+
+    <div class="info">
+        <div class="info-card">
+            <i class="fas fa-server"></i>
+            <h3>Pterodactyl Panel</h3>
+            <p>Menyediakan Panel Bot WhatsApp, Minecraft srv, murah dan terjangkau</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-tools"></i>
+            <h3>Membantu</h3>
+            <p>Membantu dengan jasa post HTML, fix node merah, reinstall/install Ptero, dan jasa MC / Btl akun / dll</p>
+        </div>
+        <div class="info-card">
+            <i class="fas fa-cloud"></i>
+            <h3>VPS Hosting</h3>
+            <p>Chat owner jika ingin membeli, harga terjangkau dan murah</p>
+        </div>
     </div>
-    <button class="check-button" onclick="checkServerStatus()">Cek Status</button>
 
-    <div id="statusBox" class="status-box" style="display: none;">
-        <img id="serverLogo" src="default-icon.png" alt="Server Logo" class="server-logo">
-        <p id="statusMessage"><strong>Status Server:</strong></p>
-        <p id="serverDetails"></p>
-        <p id="quickLink"></p>
-    </div>
-</div>
+    <footer>
+        <p>&copy; 2023 AI Store. All Rights Reserved. | <a href="https://wa.me/yourwhatsapplink" target="_blank">Chat WhatsApp</a></p>
+    </footer>
 
-<script>
-    function checkServerStatus(ip = null, port = null) {
-        ip = ip || document.getElementById('serverIp').value;
-        port = port || document.getElementById('serverPort').value;
+    <script>
+        const menuIcon = document.getElementById('menuIcon');
+        const menuList = document.getElementById('menuList');
 
-        document.title = `Ai store | Result ${ip}:${port}`;
-        
-        const quickLink = document.getElementById('quickLink');
-        quickLink.innerHTML = `<a href="https://cloud.aistore.my.id/Server/?ip=${ip}&port=${port}" target="_blank" style="color: #61dafb;">Lihat di https://cloud.aistore.my.id/server/${ip}:${port}</a>`;
-
-        fetch(`https://api.mcsrvstat.us/3/${ip}:${port}`)
-            .then(response => response.json())
-            .then(data => {
-                const statusBox = document.getElementById('statusBox');
-                const statusMessage = document.getElementById('statusMessage');
-                const serverDetails = document.getElementById('serverDetails');
-
-                if (data.online) {
-                    statusBox.style.display = 'block';
-                    document.getElementById('favicon').href = data.icon || 'default-icon.png';
-                    document.getElementById('serverLogo').src = data.icon || 'default-icon.png';
-                    
-                    statusMessage.textContent = "Server Online";
-                    serverDetails.innerHTML = `
-                        IP: ${ip}<br>
-                        Port: ${port}<br>
-                        Online Players: ${data.players.online}<br>
-                        Max Players: ${data.players.max}<br>
-                        Bio: ${data.motd.clean.join(' ')}<br>
-                        Versi: ${data.version}<br>
-                        Software: ${data.software}<br>
-                    `;
-                } else {
-                    showError("Server offline atau IP dan port tidak valid.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                showError("Gagal memuat server.");
-            });
-    }
-
-    function showError(message) {
-        const statusBox = document.getElementById('statusBox');
-        const statusMessage = document.getElementById('statusMessage');
-        const serverDetails = document.getElementById('serverDetails');
-
-        statusBox.style.display = 'block';
-        statusMessage.textContent = message;
-        serverDetails.innerHTML = "";
-        document.getElementById('serverLogo').src = "default-icon.png"; 
-    }
-
-    // Mendapatkan parameter IP dan Port dari URL
-    document.addEventListener("DOMContentLoaded", function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const ip = urlParams.get('ip');
-        const port = urlParams.get('port');
-
-        if (ip && port) {
-            document.getElementById('serverIp').value = ip;
-            document.getElementById('serverPort').value = port;
-            checkServerStatus(ip, port);
-        }
-    });
-</script>
-
+        menuIcon.addEventListener('click', () => {
+            menuIcon.classList.toggle('open');
+            if (menuList.style.display === 'block') {
+                menuList.classList.add('hidden');
+                setTimeout(() => {
+                    menuList.style.display = 'none';
+                    menuList.classList.remove('hidden');
+                }, 300);
+            } else {
+                menuList.style.display = 'block';
+            }
+        });
+    </script>
 </body>
 </html>
