@@ -121,7 +121,7 @@
         .info-card i {
             font-size: 2rem;
             margin-bottom: 15px;
-            color: #007bff;
+            color: #6DDA00;
         }
         .info-card h3 {
             font-size: 1.3rem;
@@ -140,4 +140,79 @@
         footer a {
             color: #007bff;
             text-decoration: none;
-          }
+        }
+        .item {
+    width: 100px;
+    margin: 20px 0;
+}
+.plan {
+    background-color: #1e1e1e;
+    border-radius: 40px;
+    padding: 80px;
+    margin: 40px 100;
+    width: 100%;
+    text-align: center;
+}
+.plan.highlight {
+    background-color: #2a2a2a;
+    border: 2px solid #6200ea;
+}
+
+.plan h2 {
+    margin: 0;
+    font-size: 1.5em;
+    color: #6200ea;
+}
+.plan h1 {
+	margin: 0;
+	font-size: 2.0em;
+	color: #535353
+}
+.plan p {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.plan .price {
+    font-size: 16px;
+    color: #00FF00;
+    margin-bottom: 10px;
+}
+.button0 {
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 16px;
+    color: white;
+    background: linear-gradient(20deg, #00DBFF, #1E00FF);
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.button0:hover {
+    background: linear-gradient(45deg, #0C00FF, #00F0FF);
+}
+.color {
+        	font-size: 20px; 
+            line-height: 1.5;
+            }
+        .color red {
+            color: #FF0000; 
+        }
+        .color green {
+            color: #00FF35; 
+        }
+        .color blue {
+            color: #000EFF; 
+        }
+        .color cyan {
+            color: #00FFFC; 
+        }
+        .color purple {
+            color: #CA00FF; 
+        }
+        .color pink {
+            color: #FF00E3; 
+        }
